@@ -1,0 +1,30 @@
+services:
+  backend:
+    image: piecestorage-backend
+    container_name: ps-backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    env_file: ./backend/.env
+    ports:
+      - 8000:8000
+
+  tgbot:
+    image: piecestorage-tgbot
+    container_name: ps-tgbot
+    build:
+      context: ./telegram_bot
+      dockerfile: Dockerfile
+    env_file: ./telegram_bot/.env
+
+  pgdb:
+    image: postgres:13.16@sha256:0b66ab08973087a4592632a719e6b83357bf63a5db4f92ae507cbe0037cbdd85
+    container_name: postgres-db
+    env_file: ./pgdb/.env
+    volumes:
+      - ftk-data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
+volumes:
+  ftk-data:
